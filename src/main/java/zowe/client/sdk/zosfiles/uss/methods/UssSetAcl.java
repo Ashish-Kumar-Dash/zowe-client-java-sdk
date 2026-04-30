@@ -132,7 +132,7 @@ public class UssSetAcl {
      */
     public Response setAclCommon(final String targetPath, final UssSetAclInputData setAclInputData)
             throws ZosmfRequestException {
-        ValidateUtils.checkIllegalParameter(targetPath, "fromPath");
+        ValidateUtils.checkIllegalParameter(targetPath, "targetPath");
         ValidateUtils.checkNullParameter(setAclInputData, "setAclInputData");
         ValidateUtils.checkIllegalParameter(setAclInputData.getSet().isEmpty() &&
                 setAclInputData.getModify().isEmpty() && setAclInputData.getDelete().isEmpty() &&

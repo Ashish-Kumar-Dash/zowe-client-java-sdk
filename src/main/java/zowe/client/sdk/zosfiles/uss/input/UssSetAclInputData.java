@@ -313,6 +313,17 @@ public class UssSetAclInputData {
          * @return UssSetAclInputData
          */
         public UssSetAclInputData build() {
+            final boolean hasSet = set != null;
+            final boolean hasModify = modify != null;
+            final boolean hasDelete = delete != null;
+            final boolean hasDeleteType = deleteType != null;
+
+            ValidateUtils.checkIllegalParameter(!hasSet && !hasModify && !hasDelete && !hasDeleteType,
+                "set, modify, delete, and delete type are all empty");
+            ValidateUtils.checkIllegalParameter(hasDeleteType && (hasSet || hasModify || hasDelete),
+                "delete-type cannot be combined with set, modify, or delete");
+            ValidateUtils.checkIllegalParameter(hasSet && (hasModify || hasDelete),
+                "set cannot be combined with modify or delete");
             return new UssSetAclInputData(this);
         }
 
