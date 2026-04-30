@@ -72,67 +72,68 @@ public class UssSetAcl {
     /**
      * Sets the ACL for a USS file or directory
      *
-     * @param targetPath UNIX path to the target file or directory
+    * @param filePathName UNIX path to the target file or directory
      * @param value      sets the extended ACL entries that are specified by 'entries'
      * @return Response object
      * @throws ZosmfRequestException request error state
      * @author James Kostrewski
      */
-    public Response set(final String targetPath, final String value) throws ZosmfRequestException {
-        return setAclCommon(targetPath, new UssSetAclInputData.Builder().setSet(value).build());
+    public Response set(final String filePathName, final String value) throws ZosmfRequestException {
+        return setAclCommon(filePathName, new UssSetAclInputData.Builder().setSet(value).build());
     }
 
     /**
      * Modifies the specified ACL entry for the file or directory
      *
-     * @param targetPath UNIX path to the target file or directory
+    * @param filePathName UNIX path to the target file or directory
      * @param value      modifies the extended ACL entries that are specified by 'entries'
      * @return Response object
      * @throws ZosmfRequestException request error state
      * @author James Kostrewski
      */
-    public Response modify(final String targetPath, final String value) throws ZosmfRequestException {
-        return setAclCommon(targetPath, new UssSetAclInputData.Builder().setModify(value).build());
+    public Response modify(final String filePathName, final String value) throws ZosmfRequestException {
+        return setAclCommon(filePathName, new UssSetAclInputData.Builder().setModify(value).build());
     }
 
     /**
      * Deletes the specified ACL entry from the file or directory
      *
-     * @param targetPath UNIX path to the target file or directory
+    * @param filePathName UNIX path to the target file or directory
      * @param value      deletes the extended ACL entries that are specified by 'entries'
      * @return Response object
      * @throws ZosmfRequestException request error state
      * @author James Kostrewski
      */
-    public Response delete(final String targetPath, final String value) throws ZosmfRequestException {
-        return setAclCommon(targetPath, new UssSetAclInputData.Builder().setDelete(value).build());
+    public Response delete(final String filePathName, final String value) throws ZosmfRequestException {
+        return setAclCommon(filePathName, new UssSetAclInputData.Builder().setDelete(value).build());
     }
 
     /**
      * Delete all extended ACL entries by type (setfacl -D type):
      *
-     * @param targetPath UNIX path to the target file or directory
+    * @param filePathName UNIX path to the target file or directory
      * @param deleteType deletes the extended ACL entries that are specified by type
      * @return Response object
      * @throws ZosmfRequestException request error state
      * @author James Kostrewski
      */
-    public Response deleteByType(final String targetPath, final DeleteAclType deleteType) throws ZosmfRequestException {
-        return setAclCommon(targetPath, new UssSetAclInputData.Builder().setDeleteType(deleteType).build());
+    public Response deleteByType(final String filePathName, final DeleteAclType deleteType)
+            throws ZosmfRequestException {
+        return setAclCommon(filePathName, new UssSetAclInputData.Builder().setDeleteType(deleteType).build());
     }
 
     /**
      * Sets the ACL for a USS file or directory request driven by UssSetAclInputData object settings
      *
-     * @param targetPath      UNIX path to the target file or directory
+    * @param filePathName    UNIX path to the target file or directory
      * @param setAclInputData UssSetAclInputData object to drive the request
      * @return Response object
      * @throws ZosmfRequestException request error state
      * @author James Kostrewski
      */
-    public Response setAclCommon(final String targetPath, final UssSetAclInputData setAclInputData)
+    public Response setAclCommon(final String filePathName, final UssSetAclInputData setAclInputData)
             throws ZosmfRequestException {
-        ValidateUtils.checkIllegalParameter(targetPath, "targetPath");
+        ValidateUtils.checkIllegalParameter(filePathName, "filePathName");
         ValidateUtils.checkNullParameter(setAclInputData, "setAclInputData");
         ValidateUtils.checkIllegalParameter(setAclInputData.getSet().isEmpty() &&
                 setAclInputData.getModify().isEmpty() && setAclInputData.getDelete().isEmpty() &&
@@ -141,7 +142,7 @@ public class UssSetAcl {
         final String url = connection.getZosmfUrl() +
                 ZosFilesConstants.RESOURCE +
                 ZosFilesConstants.RES_USS_FILES +
-                EncodeUtils.encodeURIComponent(FileUtils.validatePath(targetPath));
+                EncodeUtils.encodeURIComponent(FileUtils.validatePath(filePathName));
 
         final Map<String, Object> setAclMap = new HashMap<>();
         setAclMap.put("request", "setfacl");
